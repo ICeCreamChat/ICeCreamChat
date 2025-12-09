@@ -37,12 +37,6 @@
 - **后端**: Node.js, Express.
 - **AI 接口**: DeepSeek API (通过后端代理).
 - **部署环境**: Node.js >= 18.0.0 (支持 Docker/宝塔面板/Vercel).
-
----
-
-## 🚀 快速开始 (Getting Started)
-
-### 1. 环境准备
 确保你的服务器或本地环境已安装 [Node.js](https://nodejs.org/) (建议 v18 或更高版本)。
 
 ### 2. 安装依赖
