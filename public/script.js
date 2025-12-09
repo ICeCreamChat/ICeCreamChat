@@ -5,7 +5,7 @@ import * as THREE from 'three';
 // ==========================================
 const API_CONFIG = {
     deepseek: {
-        // 前端不再需要 Key，Key 由后端 /api/chat 自动注入
+        // 前端不需要 Key，Key 由后端 /api/chat 自动注入
         url: '/api/chat', 
         modelName: 'deepseek-chat'
     }
@@ -269,7 +269,7 @@ function startNewChat() {
     const newSession = {
         id: currentSessionId,
         title: "新突触 " + new Date().toLocaleTimeString(),
-        messages: [{ role: 'bot', text: "DeepSeek 神经网络已连接，请下达指令。" }]
+        messages: [{ role: 'bot', text: "ICeCream 神经网络已连接，请下达指令。" }]
     };
     chatSessions.unshift(newSession);
     saveData();
@@ -347,7 +347,7 @@ function clearAllHistory() {
         localStorage.removeItem('currentSessionId');
         chatSessions = [];
         startNewChat();
-        alert('系统记忆已重置。');
+        alert('神经突触已重置。');
         document.getElementById('dropdownMenu').classList.remove('show');
     } 
 }
@@ -421,7 +421,7 @@ function callDeepSeek(loadingElement) {
             speakText(reply); 
         } else {
             console.error(data);
-            displayMessage('bot', 'API Error: 连接深空失败', false);
+            displayMessage('bot', 'API Error: 连接神经失败', false);
         }
     })
     .catch(err => handleError(loadingElement, err));
