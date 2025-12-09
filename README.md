@@ -38,9 +38,3 @@
 - **AI 接口**: DeepSeek API (通过后端代理).
 - **部署环境**: Node.js >= 18.0.0 (支持 Docker/宝塔面板/Vercel).
 确保你的服务器或本地环境已安装 [Node.js](https://nodejs.org/) (建议 v18 或更高版本)。
-
-### 2. 安装依赖
-下载代码后，在项目根目录下运行终端命令：
-
-```bash
-npm install
