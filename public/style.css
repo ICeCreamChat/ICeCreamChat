@@ -2,14 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
 
 :root {
-    /* === 核心变量定义 (深色模式/默认) === */
+    /* === 核心变量 (深色默认) === */
     --bg-base: #050b14;
     --text-primary: #e2e8f0;
     --text-secondary: #94a3b8;
     --accent-color: #00f0ff; 
     
-    /* 玻璃质感变量 */
-    --glass-panel: rgba(15, 23, 42, 0.6); /* 稍微加深一点，保证移动端如果不完全不透明时的文字可读性 */
+    /* 玻璃质感 */
+    --glass-panel: rgba(15, 23, 42, 0.6); 
     --glass-border: rgba(255, 255, 255, 0.1);
     --sidebar-glass: rgba(10, 15, 30, 0.7);
 
@@ -22,13 +22,13 @@
     --shadow-depth: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
     --glass-blur: blur(40px);
     
-    /* 安全区域 (刘海屏适配) */
+    /* 安全区域 */
     --safe-top: env(safe-area-inset-top, 20px);
     --safe-bottom: env(safe-area-inset-bottom, 20px);
 }
 
 body.light-mode {
-    /* === 浅色模式变量 (自动覆盖) === */
+    /* === 浅色模式变量 === */
     --bg-base: #f0f4f8;
     --text-primary: #1e293b;
     --text-secondary: #64748b;
@@ -57,8 +57,8 @@ html, body {
     overscroll-behavior: none;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text-primary);
-    background-color: var(--bg-base); /* 这里的变量会自动切换 */
-    transition: background 0.5s ease, color 0.5s ease; /* 增加平滑过渡 */
+    background-color: var(--bg-base);
+    transition: background 0.3s ease, color 0.3s ease;
     -webkit-text-size-adjust: 100%;
 }
 
@@ -66,7 +66,6 @@ html, body {
 #math-canvas-container {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 0;
-    /* 径向渐变也使用变量，保证切换顺滑 */
     background: radial-gradient(circle at center, transparent 0%, var(--bg-base) 90%);
     pointer-events: none;
 }
@@ -94,23 +93,23 @@ html, body {
 .app-layout {
     width: 100%; height: 100%; max-width: 1400px;
     display: flex;
-    background: var(--glass-panel); /* 核心：使用变量 */
+    background: var(--glass-panel);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     box-shadow: var(--shadow-depth);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     overflow: hidden;
-    transition: background 0.5s ease, border-color 0.5s ease;
+    transition: background 0.3s ease;
 }
 
 /* 侧边栏 */
 .sidebar {
     width: 280px;
-    background: var(--sidebar-glass); /* 核心：使用变量 */
+    background: var(--sidebar-glass);
     border-right: 1px solid var(--glass-border);
     display: flex; flex-direction: column;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
     z-index: 100; 
 }
 
@@ -154,9 +153,10 @@ html, body {
     font-size: 12px; 
     color: var(--accent-color);
     display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); /* 微弱渐变即可 */
+    background: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); 
     backdrop-filter: var(--glass-blur);
     height: 60px; flex-shrink: 0; 
+    transition: background 0.3s ease;
 }
 
 /* 图标容器 */
@@ -223,60 +223,34 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
 .input-area {
     padding: 20px 30px; display: flex; gap: 12px;
     border-top: 1px solid var(--glass-border);
-    /* 保持轻微的背景叠加，但颜色跟随主题 */
     background: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.05)), var(--glass-noise-pattern);
     backdrop-filter: var(--glass-blur);
     flex-shrink: 0; 
+    transition: background 0.3s ease;
 }
 .input-container {
-    flex: 1; background: rgba(0,0,0,0.05); /* 稍微降低透明度，更通透 */
+    flex: 1; background: rgba(0,0,0,0.05);
     border: 1px solid var(--glass-border); border-radius: 24px;
     display: flex; align-items: center; padding: 6px 16px;
     transition: 0.3s;
 }
 .input-container:focus-within { border-color: var(--accent-color); background: rgba(0,0,0,0.1); }
 
-/* === 幽灵文字补全特效 (Input 样式修正) === */
+/* Ghost 输入法 */
 .input-wrapper {
-    flex: 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    overflow: hidden; 
+    flex: 1; position: relative; display: flex; align-items: center; height: 100%; overflow: hidden; 
 }
-
 .input-container input {
-    position: relative; 
-    z-index: 2; 
-    background: transparent !important; 
-    width: 100%;
-    padding: 10px; 
-    border: none;
-    color: var(--text-primary); 
-    font-size: 16px; 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    outline: none; 
-    min-width: 0; 
+    position: relative; z-index: 2; background: transparent !important; width: 100%; padding: 10px; 
+    border: none; color: var(--text-primary); font-size: 16px; 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; outline: none; min-width: 0; 
 }
-
 #ghost-input {
-    position: absolute;
-    top: 50%;
-    padding: 0; 
-    margin: 0;
-    transform: translateY(-50%);
-    z-index: 1; 
-    pointer-events: none;
-    font-size: 16px; 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    line-height: normal;
-    color: var(--text-secondary);
-    opacity: 0.5;
-    white-space: pre; 
+    position: absolute; top: 50%; padding: 0; margin: 0; transform: translateY(-50%); z-index: 1; 
+    pointer-events: none; font-size: 16px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+    line-height: normal; color: var(--text-secondary); opacity: 0.5; white-space: pre; 
     transition: opacity 0.3s ease, left 0.1s linear; 
 }
-
 .ghost-cycle-anim { animation: ghostCycle 0.5s ease-in-out; }
 @keyframes ghostCycle {
     0% { transform: translateY(-50%) translateY(0); opacity: 0.5; }
@@ -306,17 +280,16 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
 .dropdown-item { padding: 10px; cursor: pointer; font-size: 14px; border-radius: 6px; color: var(--text-primary); }
 .dropdown-item:hover { background: rgba(255,255,255,0.1); }
 
-/* 移动端菜单按钮 (基础样式) */
+/* 移动端菜单按钮 */
 #mobile-menu-btn {
     position: fixed; z-index: 200;
-    /* 使用变量，这样切换模式时自动变色 */
     background: var(--sidebar-glass); 
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(10px);
     width: 40px; height: 40px; display: none; border-radius: 8px;
     color: var(--text-primary); 
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: background 0.5s ease, color 0.5s ease;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; display: none; }
@@ -330,16 +303,15 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
 @keyframes dotSteps { 0%, 20% { content: ''; } 40% { content: '.'; } 60% { content: '..'; } 80%, 100% { content: '...'; } }
 
 /* ==========================================================================
-   >>> 极致移动端适配 (逻辑修正版) <<<
+   >>> 极致移动端适配 (显式强制修复版) <<<
    ========================================================================== */
 @media (max-width: 768px) {
     .glass-wrapper { padding: 0; width: 100%; height: 100dvh; }
     
     .app-layout { 
         border-radius: 0; border: none; 
-        /* 核心修正：使用变量 var(--bg-base) 
-           这样在 Light Mode 下它会自动变成白色，在 Dark Mode 下是深色
-           而且保持不透明度，防止背景混杂 */
+        /* 默认深色 (Fallback) */
+        background: #050b14; 
         background: var(--bg-base); 
     }
     
@@ -347,27 +319,21 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
         position: fixed; left: 0; top: 0; bottom: 0;
         transform: translateX(-100%); 
         width: 80%; max-width: 300px;
-        /* 核心修正：使用变量 */
         background: var(--sidebar-glass);
     }
     .sidebar.open { transform: translateX(0); }
     
-    .sidebar-header {
-        padding-top: calc(80px + var(--safe-top));
-    }
+    .sidebar-header { padding-top: calc(80px + var(--safe-top)); }
     
     #mobile-menu-btn { 
         display: flex; align-items: center; justify-content: center; 
-        top: calc(10px + var(--safe-top)); 
-        left: 15px;
+        top: calc(10px + var(--safe-top)); left: 15px;
     }
     
     .header-bar {
         height: calc(60px + var(--safe-top)); 
         padding-top: var(--safe-top); 
-        padding-left: 70px; 
-        padding-right: 15px;
-        /* 核心修正：去除写死的颜色，使用透明或通用变量 */
+        padding-left: 70px; padding-right: 15px;
         background: linear-gradient(to bottom, var(--bg-base), transparent);
         border-bottom: 1px solid var(--glass-border);
     }
@@ -378,13 +344,27 @@ body.light-mode .icon-cream { opacity: 1; transform: rotate(0deg) scale(1); colo
     .input-area {
         padding: 10px 12px; gap: 8px;
         padding-bottom: calc(10px + var(--safe-bottom)); 
-        /* 核心修正：使用变量，自动跟随主题 */
         background: var(--bg-base);
         border-top: 1px solid var(--glass-border);
     }
     
     .input-container input { font-size: 16px !important; }
     #ghost-input { font-size: 16px !important; }
-    
     .status-dot { width: 6px; height: 6px; }
+
+    /* =======================================================
+       >>> 暴力强制规则 (防止变量在移动端不生效) <<<
+       ======================================================= */
+    body.light-mode .app-layout {
+        background: #f0f4f8 !important; /* 强制浅色背景 */
+    }
+    body.light-mode .input-area {
+        background: #ffffff !important; /* 强制白色输入区 */
+    }
+    body.light-mode .header-bar {
+        background: rgba(240, 244, 248, 0.95) !important;
+    }
+    body.light-mode .sidebar {
+        background: #f8fafc !important;
+    }
 }
