@@ -43,8 +43,12 @@ let isPageVisible = true;
 document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     
+    // 初始化时间检查与主题
     checkBeijingTime();
     setInterval(checkBeijingTime, 60000);
+    
+    // 强制同步一次手机状态栏颜色 (原生级体验关键)
+    updateMobileStatusBar();
 
     updateModelLabel(); 
     
@@ -66,7 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 function initCustomCursor() {
     document.addEventListener('mousedown', (e) => {
-        createExplosion(e.clientX, e.clientY);
+        // 简单防抖，防止在移动端误触输入框时触发特效
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+             createExplosion(e.clientX, e.clientY);
+        }
     });
 }
 
@@ -100,20 +107,58 @@ function createExplosion(x, y) {
 }
 
 // ==========================================
-// 4. 主题控制
+// 4. 主题控制 (含移动端状态栏同步)
 // ==========================================
 function checkBeijingTime() {
     if (isManualTheme) return;
     const date = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Shanghai"}));
     const hour = date.getHours();
+    
+    // 记录之前的状态以便对比
+    const wasLight = document.body.classList.contains('light-mode');
+    
     if (hour >= 6 && hour < 19) document.body.classList.add('light-mode');
     else document.body.classList.remove('light-mode');
+    
+    // 如果状态改变了，或者是第一次加载，都更新一下状态栏
+    const isLight = document.body.classList.contains('light-mode');
+    if (wasLight !== isLight || !window.hasInitializedTheme) {
+        updateMobileStatusBar();
+        window.hasInitializedTheme = true; // 防止重复刷新
+    }
 }
 
 function toggleTheme() {
     isManualTheme = true;
     document.body.classList.toggle('light-mode');
     document.getElementById('dropdownMenu').classList.remove('show');
+    
+    // 手动切换时，立即同步手机状态栏颜色
+    updateMobileStatusBar();
+}
+
+// === 新增：同步移动端浏览器状态栏颜色 ===
+function updateMobileStatusBar() {
+    const isLight = document.body.classList.contains('light-mode');
+    // 这里定义的颜色必须与 style.css 中的变量一致
+    // 浅色模式背景: #f0f4f8, 深色模式背景: #050b14
+    const themeColor = isLight ? '#f0f4f8' : '#050b14'; 
+    
+    // 1. 修改 theme-color (Android/新版 iOS)
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+        metaThemeColor = document.createElement('meta');
+        metaThemeColor.name = "theme-color";
+        document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.content = themeColor;
+    
+    // 2. 修改 iOS 旧版状态栏样式
+    let metaStatusStyle = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+    if (metaStatusStyle) {
+        // 浅色模式用默认(黑字)，深色模式用半透明/黑色(白字)
+        metaStatusStyle.content = isLight ? "default" : "black-translucent";
+    }
 }
 
 // ==========================================
@@ -396,12 +441,10 @@ function callDeepSeek(loadingElement) {
         temperature: 0.7
     };
     
-    // 🔥 修改：请求发送到本地 /api/chat，不带 Key
     fetch(config.url, { 
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json' 
-            // 注意：这里删除了 Authorization Header，因为在后端加
         }, 
         body: JSON.stringify(payload) 
     })
@@ -560,7 +603,18 @@ function bindEvents() {
     document.getElementById('new-chat-btn').addEventListener('click', startNewChat);
     document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('active'); });
     document.getElementById('sidebar-overlay').addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('active'); });
-    document.getElementById('chat-input').addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+    
+    const input = document.getElementById('chat-input');
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+    
+    // 移动端优化：键盘弹出时确保输入框可见
+    if ('visualViewport' in window) {
+        window.visualViewport.addEventListener('resize', () => {
+             if(document.activeElement === input) {
+                 setTimeout(() => input.scrollIntoView({block: "center"}), 100);
+             }
+        });
+    }
 }
 
 // ==========================================
@@ -581,6 +635,13 @@ function initGhostInputFeature() {
     input.addEventListener('input', (e) => {
         const val = e.target.value;
         updateGhostSuggestion(val);
+    });
+
+    // 监听输入框滚动，防止 Ghost 文字错位
+    input.addEventListener('scroll', () => {
+         const ghost = document.getElementById('ghost-input');
+         if(input.scrollLeft > 0) ghost.style.display = 'none'; // 滚动时隐藏，避免错位
+         else if (currentGhostSuffix) ghost.style.display = 'block';
     });
 
     input.addEventListener('keydown', (e) => {
@@ -619,12 +680,10 @@ async function fetchAISuggestions(inputValue) {
     const config = API_CONFIG.deepseek;
     
     try {
-        // 请求发给本地 /api/chat，自动带上 Key
         const response = await fetch(config.url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-                // Authorization removed
             },
             body: JSON.stringify({
                 model: config.modelName,
@@ -646,14 +705,28 @@ async function fetchAISuggestions(inputValue) {
         });
 
         const data = await response.json();
+        
+        // 增加数据校验，防止异常
+        if (!data || data.error) return;
+
         if (data.choices && data.choices.length > 0) {
             let content = data.choices[0].message.content.trim();
-            content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+            // 清理可能存在的 Markdown 代码块标记
+            content = content.replace(/^```json/, '').replace(/^```/, '').replace(/```$/, '').trim();
             
             let suggestions = [];
             try {
                 suggestions = JSON.parse(content);
-            } catch (e) { return; }
+            } catch (e) {
+                // 如果解析失败，尝试简单的正则提取数组（兜底）
+                const match = content.match(/\[.*\]/s);
+                if (match) {
+                    try { suggestions = JSON.parse(match[0]); } catch(err) {}
+                }
+            }
+
+            // 过滤无效数据
+            if (!Array.isArray(suggestions)) return;
 
             currentSuggestions = suggestions.filter(s => 
                 typeof s === 'string' && 
@@ -673,7 +746,7 @@ async function fetchAISuggestions(inputValue) {
             }
         }
     } catch (error) {
-        console.error("Ghost API error:", error);
+        console.warn("Ghost API silently failed:", error); // 使用 warn 而不是 error，不打扰用户
     }
 }
 
@@ -681,7 +754,12 @@ function showGhost(inputValue) {
     const ghost = document.getElementById('ghost-input');
     const input = document.getElementById('chat-input');
     
+    // 如果 input 有滚动，暂时不显示以防对齐错误
+    if (input.scrollLeft > 0) return;
+
     const fullSuggestion = currentSuggestions[suggestionIndex];
+    if (!fullSuggestion) return;
+    
     const suffix = fullSuggestion.substring(inputValue.length);
     currentGhostSuffix = suffix;
     
@@ -691,7 +769,9 @@ function showGhost(inputValue) {
     const paddingLeft = parseFloat(style.paddingLeft) || 10;
     
     ghost.textContent = suffix;
+    // 强制修正 top，使其垂直居中更稳定
     ghost.style.left = (paddingLeft + textWidth) + 'px'; 
+    ghost.style.display = 'block';
     
     ghost.classList.remove('ghost-cycle-anim');
     ghost.style.opacity = '0.5';
@@ -716,7 +796,8 @@ function applySuggestion() {
     
     if (typeof createExplosion === 'function') {
         const rect = input.getBoundingClientRect();
-        createExplosion(rect.right - 50, rect.top + rect.height / 2);
+        // 特效位置微调
+        createExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
     }
 }
 
