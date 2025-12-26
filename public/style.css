@@ -137,7 +137,33 @@ html, body {
 .history-item.active { background: rgba(0, 240, 255, 0.1); color: var(--accent-color); font-weight: 600; border-left: 3px solid var(--accent-color); }
 .delete-chat { opacity: 0; color: #ff5252; transition: 0.2s; }
 .history-item:hover .delete-chat { opacity: 1; }
-.sidebar-footer { padding: 20px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--glass-border); }
+
+/* 修改点：优化侧边栏底部布局 */
+.sidebar-footer { 
+    padding: 20px; 
+    font-size: 12px; 
+    color: var(--text-secondary); 
+    border-top: 1px solid var(--glass-border); 
+    display: flex;             /* 启用 Flexbox */
+    flex-direction: column;    /* 垂直排列 */
+    align-items: center;       /* 水平居中 */
+    gap: 8px;                  /* 间距 */
+}
+
+/* 修改点：新增备案号样式 */
+.icp-link {
+    font-size: 10px;               /* 小字号 */
+    text-decoration: none;         /* 去掉默认下划线 */
+    color: inherit;                /* 继承父颜色，适配日夜模式 */
+    opacity: 0.4;                  /* 默认低调半透明 */
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;           /* 防止换行 */
+}
+.icp-link:hover {
+    opacity: 0.8;                  /* 悬停变亮 */
+    text-decoration: underline;    /* 悬停出现下划线 */
+}
 
 /* 主区域 */
 .main-content {

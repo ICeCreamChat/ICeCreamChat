@@ -1,0 +1,134 @@
+/* public/legacy.css - 专为 IE/旧版浏览器设计 */
+
+body {
+    background-color: #050b14; /* 深色背景代替星空 */
+    color: #e2e8f0;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden; /* 防止双滚动条 */
+}
+
+/* 隐藏现代版才有的 3D 画布和特效 */
+#math-canvas-container, .glass-snowflake, .glass-wrapper {
+    /* 注意：这里我们不隐藏 glass-wrapper，而是重置它的样式 */
+    background: none;
+    padding: 0;
+}
+
+/* 重置主容器样式 */
+.app-layout {
+    display: block; /* IE 对 Flex 的支持有限，用 Block 更稳 */
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    border: 1px solid #334155;
+    position: relative;
+}
+
+/* 侧边栏简化 */
+.sidebar {
+    float: left;
+    width: 250px;
+    height: 100%;
+    background: #1e293b;
+    border-right: 1px solid #334155;
+    position: relative;
+}
+
+.main-content {
+    margin-left: 250px; /* 配合 float */
+    height: 100%;
+    position: relative;
+    background: #0f172a;
+}
+
+/* 消息区域 */
+.messages {
+    height: calc(100% - 140px); /* 减去头部和底部的高度 */
+    overflow-y: scroll;
+    padding: 20px;
+}
+
+.message {
+    margin-bottom: 20px;
+    clear: both;
+    overflow: hidden;
+}
+
+.message-content {
+    padding: 10px 15px;
+    border-radius: 4px;
+    max-width: 80%;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 机器人消息 (左) */
+.message.bot .message-content {
+    background: #334155;
+    color: #fff;
+    float: left;
+}
+
+/* 用户消息 (右) */
+.message.user .message-content {
+    background: #0061ff;
+    color: #fff;
+    float: right;
+}
+
+/* 输入区域 */
+.input-area {
+    position: absolute;
+    bottom: 0;
+    left: 250px; /* 对应侧边栏宽度 */
+    right: 0;
+    height: 80px;
+    background: #1e293b;
+    border-top: 1px solid #334155;
+    padding: 20px;
+}
+
+.input-container {
+    display: block;
+    position: relative;
+}
+
+#chat-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: #fff;
+    float: left;
+}
+
+#send-btn {
+    width: 20%;
+    padding: 10px;
+    background: #00f0ff;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+}
+
+/* 隐藏不兼容的 UI 元素 */
+#ghost-input, #mobile-menu-btn, .glass-snowflake, .icon-btn {
+    display: none !important;
+}
+
+/* 强制显示发送按钮文字 */
+#send-btn:after {
+    content: "发送";
+}
+
+/* 简单的加载提示 */
+.loading {
+    text-align: center;
+    color: #94a3b8;
+    padding: 10px;
+    font-size: 12px;
+}

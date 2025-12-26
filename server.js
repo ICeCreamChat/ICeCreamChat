@@ -24,14 +24,13 @@ app.use(express.static(path.join(__dirname, 'public'), {
 // 5. 后端 API 接口
 app.post('/api/chat', async (req, res) => {
     try {
-        // 修改点：从环境变量中读取 Key，不再硬编码
+        // 从环境变量中读取 Key，不再硬编码
         const API_KEY = process.env.DEEPSEEK_API_KEY;
         
         if (!API_KEY) {
             throw new Error('服务器未配置 API Key，请检查 .env 文件');
         }
 
-        // 使用之前的 API 接口地址
         const response = await fetch('https://edge.tb.api.mkeai.com/v1/chat/completions', {
             method: 'POST',
             headers: {

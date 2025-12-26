@@ -10,6 +10,27 @@
     
     <title>ICeCreamChat - 探索数学未知之地</title>
     
+    <style>body{margin:0;padding:0;}</style>
+
+    <script>
+        (function() {
+            var isIE = !!window.MSInputMethodContext && !!document.documentMode;
+            var isOldEdge = window.navigator.userAgent.indexOf("Edge") > -1;
+            
+            if (isIE || isOldEdge) {
+                // IE/旧版 Edge：加载降级样式
+                document.write('<link rel="stylesheet" href="legacy.css">');
+                window.isLegacy = true; // 标记为旧版模式
+            } else {
+                // 现代浏览器：加载原本的高级玻璃拟态样式
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'style.css';
+                document.head.appendChild(link);
+            }
+        })();
+    </script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
@@ -17,8 +38,6 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    
-    <link rel="stylesheet" href="style.css">
     
     <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -49,6 +68,7 @@
                     </div>
                 <div class="sidebar-footer">
                     <div class="model-badge" id="model-display">ICeCream 1.0</div>
+                    <a href="https://beian.miit.gov.cn/" target="_blank" class="icp-link">皖ICP备2025106471号-1</a>
                 </div>
             </aside>
 
@@ -78,7 +98,7 @@
                     </div>
                 
                 <div id="loading" class="loading" style="display: none;">
-                    <span>DeepSeek 雪花冰淇凌制作中</span>
+                    <span>[ICeCream] 雪花冰淇凌制作中</span>
                 </div>
                 
                 <div class="input-area">
@@ -109,5 +129,15 @@
     <div id="sidebar-overlay" class="overlay"></div>
 
     <script type="module" src="script.js"></script>
+
+    <script nomodule src="legacy.js"></script>
+    
+    <script>
+        if (window.isLegacy) {
+            var script = document.createElement('script');
+            script.src = 'legacy.js';
+            document.body.appendChild(script);
+        }
+    </script>
 </body>
 </html>
