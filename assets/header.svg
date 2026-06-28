@@ -1,0 +1,93 @@
+<svg width="900" height="300" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1"/>
+      <stop offset="25%" style="stop-color:#a18cd1;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#fbc2eb;stop-opacity:1"/>
+      <stop offset="75%" style="stop-color:#a6c1ee;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#84fab0;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="bgAnim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1">
+        <animate attributeName="stop-color" values="#667eea;#84fab0;#fbc2eb;#667eea" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#fbc2eb;stop-opacity:1">
+        <animate attributeName="stop-color" values="#fbc2eb;#a18cd1;#a6c1ee;#fbc2eb" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#84fab0;stop-opacity:1">
+        <animate attributeName="stop-color" values="#84fab0;#fbc2eb;#667eea;#84fab0" dur="8s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      @keyframes float1 { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+      @keyframes float2 { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+      @keyframes float3 { 0%,100% { transform: translateY(-10px); } 50% { transform: translateY(5px); } }
+      @keyframes sparkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+      @keyframes drift { 0% { transform: translateX(0); } 50% { transform: translateX(10px); } 100% { transform: translateX(0); } }
+      @keyframes pulse { 0%,100% { r: 3; opacity: 0.6; } 50% { r: 5; opacity: 1; } }
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 800; font-size: 52px; fill: white; filter: url(#glow); }
+      .subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 400; font-size: 18px; fill: rgba(255,255,255,0.9); }
+      .tagline { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 300; font-size: 14px; fill: rgba(255,255,255,0.75); letter-spacing: 3px; }
+      .particle { fill: rgba(255,255,255,0.5); }
+      .star { fill: rgba(255,255,255,0.7); }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="300" fill="url(#bgAnim)" rx="0"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.05">
+    <line x1="0" y1="60" x2="900" y2="60" stroke="white" stroke-width="0.5"/>
+    <line x1="0" y1="120" x2="900" y2="120" stroke="white" stroke-width="0.5"/>
+    <line x1="0" y1="180" x2="900" y2="180" stroke="white" stroke-width="0.5"/>
+    <line x1="0" y1="240" x2="900" y2="240" stroke="white" stroke-width="0.5"/>
+    <line x1="150" y1="0" x2="150" y2="300" stroke="white" stroke-width="0.5"/>
+    <line x1="300" y1="0" x2="300" y2="300" stroke="white" stroke-width="0.5"/>
+    <line x1="450" y1="0" x2="450" y2="300" stroke="white" stroke-width="0.5"/>
+    <line x1="600" y1="0" x2="600" y2="300" stroke="white" stroke-width="0.5"/>
+    <line x1="750" y1="0" x2="750" y2="300" stroke="white" stroke-width="0.5"/>
+  </g>
+
+  <!-- Floating particles -->
+  <circle cx="80" cy="60" r="3" class="particle" style="animation: float1 4s ease-in-out infinite, sparkle 3s ease-in-out infinite;"/>
+  <circle cx="200" cy="100" r="2" class="particle" style="animation: float2 5s ease-in-out infinite 0.5s, sparkle 4s ease-in-out infinite 1s;"/>
+  <circle cx="350" cy="50" r="4" class="particle" style="animation: float3 6s ease-in-out infinite 1s, sparkle 3.5s ease-in-out infinite;"/>
+  <circle cx="520" cy="80" r="2.5" class="particle" style="animation: float1 4.5s ease-in-out infinite 0.3s, sparkle 5s ease-in-out infinite 0.5s;"/>
+  <circle cx="680" cy="45" r="3" class="particle" style="animation: float2 5.5s ease-in-out infinite 0.8s, sparkle 3s ease-in-out infinite 1.5s;"/>
+  <circle cx="820" cy="70" r="2" class="particle" style="animation: float3 4s ease-in-out infinite 1.2s, sparkle 4.5s ease-in-out infinite;"/>
+  <circle cx="130" cy="200" r="2" class="particle" style="animation: float1 5s ease-in-out infinite 0.7s, sparkle 4s ease-in-out infinite 0.3s;"/>
+  <circle cx="750" cy="180" r="3.5" class="particle" style="animation: float2 6s ease-in-out infinite 0.2s, sparkle 3s ease-in-out infinite 0.8s;"/>
+  <circle cx="400" cy="220" r="2" class="particle" style="animation: float3 4.5s ease-in-out infinite 1.5s, sparkle 5s ease-in-out infinite 1s;"/>
+  <circle cx="600" cy="200" r="2.5" class="particle" style="animation: float1 5.5s ease-in-out infinite 0.4s, sparkle 3.5s ease-in-out infinite 1.2s;"/>
+
+  <!-- Sparkle stars -->
+  <g class="star" style="animation: sparkle 2s ease-in-out infinite, drift 6s ease-in-out infinite;">
+    <polygon points="150,35 153,43 161,43 155,48 157,56 150,51 143,56 145,48 139,43 147,43"/>
+  </g>
+  <g class="star" style="animation: sparkle 3s ease-in-out infinite 1s, drift 7s ease-in-out infinite 0.5s;">
+    <polygon points="780,55 782,60 787,60 783,64 784,69 780,66 776,69 777,64 773,60 778,60" transform="scale(0.8)"/>
+  </g>
+  <g class="star" style="animation: sparkle 2.5s ease-in-out infinite 0.5s, drift 5s ease-in-out infinite 1s;">
+    <polygon points="650,30 652,35 657,35 653,38 654,43 650,40 646,43 647,38 643,35 648,35" transform="scale(0.7)"/>
+  </g>
+
+  <!-- Ice cream emoji -->
+  <text x="350" y="95" font-size="36" style="animation: float1 3s ease-in-out infinite;">🍦</text>
+
+  <!-- Main text -->
+  <text x="450" y="140" text-anchor="middle" class="title">ICeCream</text>
+  <text x="450" y="175" text-anchor="middle" class="subtitle">AI-Powered Education Workbench</text>
+  <text x="450" y="210" text-anchor="middle" class="tagline">CONSTRAINT SOLVING · TIMETABLING · GEOGEBRA · MANIM</text>
+
+  <!-- Bottom wave -->
+  <path d="M0,260 C150,230 300,280 450,260 C600,240 750,280 900,250 L900,300 L0,300 Z" fill="rgba(255,255,255,0.08)"/>
+  <path d="M0,270 C200,250 350,290 500,270 C650,250 800,285 900,260 L900,300 L0,300 Z" fill="rgba(255,255,255,0.05)"/>
+</svg>

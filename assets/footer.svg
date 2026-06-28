@@ -1,0 +1,28 @@
+<svg width="900" height="120" viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1">
+        <animate attributeName="stop-color" values="#667eea;#84fab0;#fbc2eb;#667eea" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#fbc2eb;stop-opacity:1">
+        <animate attributeName="stop-color" values="#fbc2eb;#a18cd1;#a6c1ee;#fbc2eb" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#84fab0;stop-opacity:1">
+        <animate attributeName="stop-color" values="#84fab0;#fbc2eb;#667eea;#84fab0" dur="8s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    <style>
+      .footer-text { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 300; font-size: 13px; fill: rgba(255,255,255,0.8); letter-spacing: 2px; }
+      @keyframes waveMove { 0% { d: path("M0,40 C150,20 300,60 450,40 C600,20 750,55 900,35 L900,120 L0,120 Z"); } 50% { d: path("M0,50 C150,30 300,55 450,35 C600,50 750,25 900,45 L900,120 L0,120 Z"); } 100% { d: path("M0,40 C150,20 300,60 450,40 C600,20 750,55 900,35 L900,120 L0,120 Z"); } }
+    </style>
+  </defs>
+
+  <!-- Wave layers -->
+  <path d="M0,50 C150,30 300,65 450,45 C600,25 750,60 900,40 L900,120 L0,120 Z" fill="url(#footerGrad)" opacity="0.3"/>
+  <path d="M0,60 C200,40 350,70 500,55 C650,40 800,65 900,50 L900,120 L0,120 Z" fill="url(#footerGrad)" opacity="0.5"/>
+  <path d="M0,70 C150,55 300,80 450,65 C600,50 750,75 900,60 L900,120 L0,120 Z" fill="url(#footerGrad)" opacity="0.7"/>
+  <path d="M0,80 C200,65 400,85 550,75 C700,65 800,80 900,70 L900,120 L0,120 Z" fill="url(#footerGrad)" opacity="0.9"/>
+
+  <!-- Footer text -->
+  <text x="450" y="108" text-anchor="middle" class="footer-text">✨ CRAFTED WITH PASSION FOR EDUCATION TECHNOLOGY ✨</text>
+</svg>
