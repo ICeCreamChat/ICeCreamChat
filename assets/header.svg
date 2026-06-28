@@ -85,7 +85,7 @@
   <!-- Main text -->
   <text x="450" y="140" text-anchor="middle" class="title">ICeCream</text>
   <text x="450" y="175" text-anchor="middle" class="subtitle">AI-Powered Education Workbench</text>
-  <text x="450" y="210" text-anchor="middle" class="tagline">CONSTRAINT SOLVING · TIMETABLING · GEOGEBRA · MANIM</text>
+  <text x="450" y="210" text-anchor="middle" class="tagline">AI CHAT · MATH ANIMATION · GEOGEBRA · CLASSROOM TOOLS</text>
 
   <!-- Bottom wave -->
   <path d="M0,260 C150,230 300,280 450,260 C600,240 750,280 900,250 L900,300 L0,300 Z" fill="rgba(255,255,255,0.08)"/>
